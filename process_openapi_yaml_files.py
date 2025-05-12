@@ -1,10 +1,12 @@
-import os
-import yaml
-from concurrent.futures import ProcessPoolExecutor, as_completed
-from typing import Callable, Any, Optional
-from dataclasses import dataclass
 import argparse
 import csv
+import os
+import time
+from concurrent.futures import ProcessPoolExecutor, as_completed
+from dataclasses import dataclass
+from typing import Any, Callable, Optional
+
+import yaml
 
 API_DIR = os.path.join("openapi-directory", "APIs")
 YAML_EXTENSIONS = {".yaml", ".yml"}
@@ -52,12 +54,16 @@ def extract_openapi_stats(yaml_text: str) -> Optional[Stats]:
     return None
 
 def find_all_yaml_files(root_dir):
+    start_time = time.time()
     yaml_files = []
     for dirpath, _, filenames in os.walk(root_dir):
         for filename in filenames:
             ext = os.path.splitext(filename)[1].lower()
             if ext in YAML_EXTENSIONS:
                 yaml_files.append(os.path.join(dirpath, filename))
+    end_time = time.time()
+    duration = end_time - start_time
+    print(f"Found {len(yaml_files)} YAML files in {duration:.2f} seconds")
     return yaml_files
 
 def process_files_parallel(root_dir, transform_func):
