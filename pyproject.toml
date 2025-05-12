@@ -17,6 +17,9 @@ dependencies = [
     "numpy",
     "requests",
     "pyyaml",
+    "matplotlib",
+    "pyarrow",
+    "pandas",
 ]
 
 [project.optional-dependencies]
@@ -26,6 +29,7 @@ dev = [
     "isort",
     "mypy",
     "ruff",
+    "notebook"
 ]
 
 [tool.ruff]
